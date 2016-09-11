@@ -5,11 +5,11 @@
         "outDir": "dist",
         "moduleResolution": "node",
         "noImplicitAny": true,
+        "inlineSourceMap": true,
         "declaration": true
     },
 
     "include": [
-        "src/**/*.ts",
-        "test/**/*.ts"
+        "src/**/*.ts"
     ]
 }

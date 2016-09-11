@@ -54,12 +54,12 @@ describe("Blueprint", function() {
   });
 
   describe("path variables", function() {
-    let fixturePath = fixture("variables");
+    let fixturePath = fixture("path-variables");
     let filesPath = fixturePath + "/files";
 
     it("replaces path variables with provided value", function() {
-      tmpdir = tmpdir + "/existing-variables";
-      fsp.copySync(fixture("existing-variables"), tmpdir);
+      tmpdir = tmpdir + "/existing-path-variables";
+      fsp.copySync(fixture("existing-path-variables"), tmpdir);
 
       let blueprint = new Blueprint({
         source: fixturePath,
@@ -79,6 +79,30 @@ describe("Blueprint", function() {
         new Op.CreateFile(filesPath + "/dir-a-__name__/__name____name____name__", tmpdir + "/dir-a-existing/existingexistingexisting"),
         new Op.CreateFile(filesPath + "/dir-a-__name__/__type__-__name__", tmpdir + "/dir-a-existing/controller-existing"),
       ]);
+    });
+
+  });
+
+  describe("file variables", function() {
+    let fixturePath = fixture("file-variables");
+    let filesPath = fixturePath + "/files";
+
+    it("replaces file variables with provided values", function() {
+      tmpdir = tmpdir + "/existing-file-variables";
+      fsp.copySync(fixture("existing-file-variables"), tmpdir);
+
+      let blueprint = new Blueprint({
+        source: fixturePath,
+        destination: tmpdir,
+        fileVariables: {
+          name: "AppName"
+        }
+      });
+
+      blueprint.install();
+
+      let contents = fsp.readFileSync(tmpdir + "/index.js");
+      expect(contents.toString()).to.equal(`let app = "AppName";`);
     });
 
   });

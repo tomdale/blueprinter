@@ -14,7 +14,7 @@ export default class Entry {
     return `${this.srcDir}/${this.path}`;
   }
 
-  toOperation(destDir: string, pathVariables: Variables): Op.Operation {
+  toOperation(destDir: string, pathVariables: Variables, fileVariables: Variables): Op.Operation {
     let destPath = `${destDir}/${this.path}`;
     destPath = interpolateVariables(destPath, pathVariables);
 
@@ -25,7 +25,7 @@ export default class Entry {
     if (this.isDirectory) {
       return new Op.CreateDirectory(destPath);
     } else {
-      return new Op.CreateFile(this.srcDir + "/" + this.path, destPath);
+      return new Op.CreateFile(this.srcDir + "/" + this.path, destPath, fileVariables);
     }
   }
 }

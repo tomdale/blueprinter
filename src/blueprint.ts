@@ -10,8 +10,11 @@ export interface ConstructorOptions {
    * copied into. */
   destination: string;
 
-  /** Object with strings that will be replaced in blueprint paths. */
+  /** Object containing variables and their values that will be replaced in blueprint paths. */
   pathVariables?: Variables;
+
+  /** Object containing variables and their values that will be replaced in blueprint files. */
+  fileVariables?: Variables;
 }
 
 export interface Variables {
@@ -22,11 +25,13 @@ export default class Blueprint {
   source: string;
   destination: string;
   pathVariables: Variables;
+  fileVariables: Variables;
 
   constructor(options: ConstructorOptions) {
     this.source = options.source;
     this.destination = options.destination;
     this.pathVariables = options.pathVariables;
+    this.fileVariables = options.fileVariables;
   }
 
   get files() {
@@ -42,8 +47,13 @@ export default class Blueprint {
     // Turn the list of source files into a list of operations, based on the
     // state of the target directory.
     return entries.map(entry => {
-      return entry.toOperation(destination, this.pathVariables);
+      return entry.toOperation(destination, this.pathVariables, this.fileVariables);
     }).filter(Boolean);
+  }
+
+  install() {
+    let operations = this.operations();
+    operations.forEach(op => op.execute());
   }
 };
 

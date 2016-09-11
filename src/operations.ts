@@ -1,15 +1,21 @@
 import { copySync, mkdirSync } from "fs-extra-promise";
+import { Variables } from "./blueprint";
+import { readFileSync, writeFileSync } from "fs";
+import template = require("lodash.template");
 
 export interface Operation {
   execute(): void;
 }
 
 export class CreateFile implements Operation {
-  constructor(public srcPath: string, public destPath: string) {
+  constructor(public srcPath: string, public destPath: string, public fileVariables?: Variables) {
   }
 
-  execute() {
-    copySync(this.srcPath, this.destPath);
+  execute(){
+    let source = readFileSync(this.srcPath);
+    let compiled = template(source);
+
+    writeFileSync(this.destPath, compiled(this.fileVariables));
   }
 }
 
