@@ -1,6 +1,5 @@
-import { copySync, mkdirSync } from "fs-extra-promise";
 import { Variables } from "./blueprint";
-import { readFileSync, writeFileSync } from "fs";
+import { mkdirSync, readFileSync, writeFileSync } from "fs";
 import template = require("lodash.template");
 
 export interface Operation {
