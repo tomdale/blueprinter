@@ -6,6 +6,9 @@
   "repository": "https://github.com/tomdale/blue-prints",
   "main": "dist/blueprint.js",
   "typings": "dist/blueprint.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "prepublish": "npm test && npm run build",
     "build": "rm -rf dist && tsc -p tsconfig.build.json",
